@@ -33,7 +33,7 @@
 #' @param variable.statistic If a variable has different files that represent different calculations or groupings, such as the mean and confidence intervals of a variable, then please note the calculation here. For example, `mean`, `median`, `95% CI high`,`95% CI low`, etc.
 #' @param variable.unit Unit of measurement, for example `kg/ha`, `kg/kg`, `days`, `minutes`, etc. See `https://www.ebi.ac.uk/ols/ontologies/om` for standardized SI units. Please use a forward slash `/` delim rather than `-1` (so `kg/ha` not `kg ha-1`).
 #' @param method.analysis_type A general description of the type of analysis employed. For example, `niche model` or`DSSAT crop model`.
-#' @param method.description A summary of methods used to create the dataset. For example `Travel time to the nearest city was estimated using an accumulated cost function (accCost) in the gdistance R package (van Etten, 2018). This function requires two input datasets: (i) a set of locations to estimate travel time to and (ii) a transition matrix that represents the cost or time to travel across a surface. The set of locations were based on populated urban areas in the 2016 version of the Joint Research Centre’s Global Human Settlement Layers (GHSL) datasets (Pesaresi and Freire, 2016) that represent low density (LDC) urban clusters and high density (HDC) urban areas (https://ghsl.jrc.ec.europa.eu/datasets.php). These urban areas were represented by points, spaced at 1km distance around the perimeter of each urban area. The transition matrix was based on the friction surface (https://map.ox.ac.uk/research-project/accessibility_to_cities) from the 2015 global accessibility map (Weiss et al, 2018). The R code used to generate the 12 travel time maps is included in the report “A suite of global accessibility indicators for sustainable rural development” (Nelson, 2019) that can be downloaded with these data layers`.
+#' @param method.description A summary of methods used to create the dataset. For example `Travel time to the nearest city was estimated using an accumulated cost function (accCost) in the gdistance R package (van Etten, 2018). This function requires two input datasets: (i) a set of locations to estimate travel time to and (ii) a transition matrix that represents the cost or time to travel across a surface. The set of locations were based on populated urban areas in the 2016 version of the Joint Research Centre’s Global Human Settlement Layers (GHSL) datasets (Pesaresi and Freire, 2016) that represent low density (LDC) urban clusters and high density (HDC) urban areas (https://ghsl.jrc.ec.europa.eu/datasets.php). These urban areas were represented by points, spaced at 1km distance around the perimeter of each urban area. The transition matrix was based on the friction surface (https://map.ox.ac.uk/research-project/accessibility_to_cities) from the 2015 global accessibility map (Weiss et al, 2018). The R code used to generate the 12 travel time maps is included in the report A suite of global accessibility indicators for sustainable rural development (Nelson, 2019) that can be downloaded with these data layers`.
 #' @param method.github If there is a github repo associated with the analysis please list it here. Ideally it should walk a user though the steps to recreate a datasest.
 #' @param method.qual_indicator The name of a data avaiable indicator, typically for niche or analogue layers derived from empirical data. For example `number of studies`.
 #' @param method.qual_availability The value for the data availability indicator defined in the row above. This can be numeric or ordinal (e.g. `high`, `medium`, or `low`)
@@ -107,27 +107,27 @@ atlas_metadata<-function(dataset.title_short="",
                          data.shapefile_type="",
                          data.shapefile_unit="",
                          data.shapefile_description=""
-                        ){
-        
-# Add geospatial metadata from terra objects
-if(class(data)!="logical"){
+){
+  
+  # Add geospatial metadata from terra objects
+  if(class(data)!="logical"){
     try(if(!class(data) %in% c("SpatRaster","SpatVector")) stop("Data is not a terra package SpatRaster or SpatVector object"))
-        grid.proj<-terra::crs(data,proj=T)
-        grid.xmin<-terra::ext(data)$xmin
-        grid.xmax<-terra::ext(data)$xmax
-        grid.ymin<-terra::ext(data)$ymin
-        grid.ymax<-terra::ext(data)$ymax
-        if(class(Data)=="SpatRaster"){
-            grid.xres<-res(data)[1]
-            grid.yres<-res(data)[2]
-            grid.nrow<-terra::nrow(data)
-            grid.ncol<-terra::ncol(data)
-        }
-        }
-        
-Meta.data<-data.frame(dataset.title_short, dataset.title_long, dataset.desc, dataset.author, dataset.contact, dataset.contact_email, dataset.pub_doi, dataset.data_doi, dataset.sourceurl, dataset.projecturl, dataset.citation, dataset.licence, file.filename, file.format, file.data_type, file.no_value_data, file.file_naming_convention,  file.flags, variable.theme, variable.subtheme, variable.name, variable.subname, variable.commodity, variable.type, variable.statistic, variable.unit, method.analysis_type, method.description, method.github, method.qual_indicator, method.qual_availability, grid.proj, grid.xres, grid.yres, grid.xmin, grid.xmax, grid.ymin, grid.ymax, grid.nrow, grid.ncol, temporal.resolution, temporal.start_date, temporal.end_date, data.categorical_val, data.categorical_desc, data.shapefile_field, data.shapefile_type, data.shapefile_unit, data.shapefile_description)
-
-        
-return(Meta.data)
-    
+    grid.proj<-terra::crs(data,proj=T)
+    grid.xmin<-terra::ext(data)$xmin
+    grid.xmax<-terra::ext(data)$xmax
+    grid.ymin<-terra::ext(data)$ymin
+    grid.ymax<-terra::ext(data)$ymax
+    if(class(Data)=="SpatRaster"){
+      grid.xres<-res(data)[1]
+      grid.yres<-res(data)[2]
+      grid.nrow<-terra::nrow(data)
+      grid.ncol<-terra::ncol(data)
+    }
+  }
+  
+  Meta.data<-data.frame(dataset.title_short, dataset.title_long, dataset.desc, dataset.author, dataset.contact, dataset.contact_email, dataset.pub_doi, dataset.data_doi, dataset.sourceurl, dataset.projecturl, dataset.citation, dataset.licence, file.filename, file.format, file.data_type, file.no_value_data, file.file_naming_convention,  file.flags, variable.theme, variable.subtheme, variable.name, variable.subname, variable.commodity, variable.type, variable.statistic, variable.unit, method.analysis_type, method.description, method.github, method.qual_indicator, method.qual_availability, grid.proj, grid.xres, grid.yres, grid.xmin, grid.xmax, grid.ymin, grid.ymax, grid.nrow, grid.ncol, temporal.resolution, temporal.start_date, temporal.end_date, data.categorical_val, data.categorical_desc, data.shapefile_field, data.shapefile_type, data.shapefile_unit, data.shapefile_description)
+  
+  
+  return(Meta.data)
+  
 }
