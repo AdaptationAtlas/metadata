@@ -1,5 +1,10 @@
 #' Generate meta-data for Adaptation Atlas Layers
-
+#'
+#' This function will assist you to systematically generate meta-data for the Adaptation Atlas.
+#'
+#' The `data` parameter can be used to supply a `SpatVector` or `SpatRaster` object from which geospatial dataset will automatically extracted.
+#' In all cases provide multiple values as a list, for example `list(10.1038/nature25181, 10.1038/EE23432)`
+#' 
 #' @param data A `SpatRaster` or `SparVector` object.
 #' @param dataset.title_short A short title to label the dataset. e.g., `MapSPAM`.
 #' @param dataset.title_long A full title to label the dataset. e.g., `Travel time to cities`.
