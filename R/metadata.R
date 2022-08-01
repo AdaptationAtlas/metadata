@@ -6,6 +6,7 @@
 #' In all cases provide multiple values as a list, for example `list(10.1038/nature25181, 10.1038/EE23432)`
 #' 
 #' @param data A `SpatRaster` or `SparVector` object.
+#' @param folder The directory path for where the output metadata should be saved.
 #' @param dataset.title_short A short title to label the dataset. e.g., `MapSPAM`.
 #' @param dataset.title_long A full title to label the dataset. e.g., `Travel time to cities`.
 #' @param dataset.desc A short description enabling the user to quickly understand the subject of the dataset and how to interpret it. For example, `The value of each pixel is the estimated travel time in minutes to the nearest urban area in 2015. There are 12 data layers based on different sets of urban areas, defined by their population in year 2015`.
@@ -56,8 +57,12 @@
 #' @param data.shapefile_unit For the fields listed in `data.shapefile_field` please provide a list of units, e.g. `list(NA,NA,"proportion")`.
 #' @param data.shapefile_description For the fields listed in `data.shapefile_field` please provide a description of the field, e.g. `list("Country name","Administrative unit 1 name","Poverty headcount ratio at national poverty lines")`.
 #' @return A data.frame of meta.data
+#' imports stringi stri_replace_all_regex
+#' imports terra crs ext nrow ncol res
 #' @export
-atlas_metadata<-function(dataset.title_short="",
+atlas_metadata<-function(data=NA,
+                         folder=NA,
+                         dataset.title_short="",
                          dataset.title_long="",
                          dataset.desc="",
                          dataset.author="",
@@ -87,8 +92,7 @@ atlas_metadata<-function(dataset.title_short="",
                          method.description="",
                          method.github="",
                          method.qual_indicator="",
-                         method.qual_availability="",
-                         data=NA,
+                         method.qual_availability="",               
                          grid.proj="",
                          grid.xres="",
                          grid.yres="",
@@ -118,15 +122,24 @@ atlas_metadata<-function(dataset.title_short="",
     grid.ymin<-terra::ext(data)$ymin
     grid.ymax<-terra::ext(data)$ymax
     if(class(Data)=="SpatRaster"){
-      grid.xres<-res(data)[1]
-      grid.yres<-res(data)[2]
+      grid.xres<-terra::res(data)[1]
+      grid.yres<-terra::res(data)[2]
       grid.nrow<-terra::nrow(data)
       grid.ncol<-terra::ncol(data)
     }
   }
   
   Meta.data<-data.frame(dataset.title_short, dataset.title_long, dataset.desc, dataset.author, dataset.contact, dataset.contact_email, dataset.pub_doi, dataset.data_doi, dataset.sourceurl, dataset.projecturl, dataset.citation, dataset.licence, file.filename, file.format, file.data_type, file.no_value_data, file.file_naming_convention,  file.flags, variable.theme, variable.subtheme, variable.name, variable.subname, variable.commodity, variable.type, variable.statistic, variable.unit, method.analysis_type, method.description, method.github, method.qual_indicator, method.qual_availability, grid.proj, grid.xres, grid.yres, grid.xmin, grid.xmax, grid.ymin, grid.ymax, grid.nrow, grid.ncol, temporal.resolution, temporal.start_date, temporal.end_date, data.categorical_val, data.categorical_desc, data.shapefile_field, data.shapefile_type, data.shapefile_unit, data.shapefile_description)
-  
+        
+  File<-stringi::stri_replace_all_regex(file.filename,c("[.]tiff","[.]tif","[.]shp","[.]grid",".rda","[.]Rdata"),"",vectorize=F)
+
+  if(!is.na(folder){
+      if(!dir.exists(folder)){
+          dir.create(folder,recursive=T)
+          }
+  File<-paste0(folder,"/",File,".rda")
+  save(Meta.data,file=File)
+      }
   
   return(Meta.data)
   
