@@ -133,7 +133,7 @@ atlas_metadata<-function(data=NA,
         
   File<-stringi::stri_replace_all_regex(file.filename,c("[.]tiff","[.]tif","[.]shp","[.]grid",".rda","[.]Rdata"),"",vectorize=F)
 
-  if(!is.na(folder){
+  if(!is.na(folder)){
       if(!dir.exists(folder)){
           dir.create(folder,recursive=T)
           }
