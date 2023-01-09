@@ -121,7 +121,7 @@ atlas_metadata<-function(data=NA,
     grid.xmax<-terra::ext(data)$xmax
     grid.ymin<-terra::ext(data)$ymin
     grid.ymax<-terra::ext(data)$ymax
-    if(class(Data)=="SpatRaster"){
+    if(class(data)=="SpatRaster"){
       grid.xres<-terra::res(data)[1]
       grid.yres<-terra::res(data)[2]
       grid.nrow<-terra::nrow(data)
